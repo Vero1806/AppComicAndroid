@@ -25,18 +25,24 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.magnifier
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -84,14 +90,34 @@ fun FavoriteCollectionCard(
     @StringRes text: Int,
     modifier: Modifier = Modifier
 ) {
-    Image(painter = painterResource(drawable),
-        contentDescription = null,
-        contentScale = ContentScale.Crop, // .Fit o FillBounds(mete toda la foto en el espacio que le des) modifica el cacho del recorte
-        modifier = Modifier
-            .size(width = 125.dp, height = 135.dp) // tamaño de la imagen
+    Surface (
+        shape = MaterialTheme.shapes.extraSmall, //redondea las esquinas
+        color = MaterialTheme.colorScheme.surface,
+        modifier = modifier
+            .padding(16.dp) //aprox revisar
+    ){
 
-    )
-    // Implement composable here
+        Column (horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .size(132.dp, 186.dp)) {
+
+            Image(
+                painter = painterResource(drawable),
+                contentDescription = null,
+                contentScale = ContentScale.Crop, //Lo mismo que en el ejemplo del yoga
+                modifier = Modifier
+                    .size (width = 125.dp, height = 135.dp)
+            )
+            Spacer(modifier.height(19.dp))
+            Text(
+                text = stringResource(text),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier
+                    //.padding(horizontal = 16.dp)
+            )
+        }
+    }
+
 }
 
 // Step: Align your body row - Arrangements
