@@ -22,6 +22,7 @@ import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -38,6 +39,8 @@ import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.magnifier
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -45,6 +48,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -94,7 +98,7 @@ fun FavoriteCollectionCard(
         shape = MaterialTheme.shapes.extraSmall, //redondea las esquinas
         color = MaterialTheme.colorScheme.surface,
         modifier = modifier
-            .padding(16.dp) //aprox revisar
+           .padding(16.dp) //aprox revisar
     ){
 
         Column (horizontalAlignment = Alignment.CenterHorizontally,
@@ -106,19 +110,49 @@ fun FavoriteCollectionCard(
                 contentDescription = null,
                 contentScale = ContentScale.Crop, //Lo mismo que en el ejemplo del yoga
                 modifier = Modifier
-                    .size (width = 125.dp, height = 135.dp)
+                    .size (width = 132.dp, height = 133.dp)
             )
-            Spacer(modifier.height(19.dp))
+            Spacer(modifier.height(8.dp))
+
             Text(
                 text = stringResource(text),
                 style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier
+                color = MaterialTheme.colorScheme.onPrimary,
+                 modifier = Modifier,
+                //VerticalAlignmentLine = Arrangement.Bottom
                     //.padding(horizontal = 16.dp)
             )
+
         }
     }
 
 }
+@Composable
+fun FavoriteCollectionCard2(
+    @DrawableRes drawable: Int,
+
+    modifier: Modifier = Modifier
+) {
+    Surface (
+        shape = MaterialTheme.shapes.extraSmall, //redondea las esquinas
+        color = MaterialTheme.colorScheme.surface,
+        modifier = modifier
+            .padding(9.dp) //aprox revisar
+    ){
+
+            Image(
+                painter = painterResource(drawable),
+                contentDescription = null,
+                contentScale = ContentScale.Crop, //Lo mismo que en el ejemplo del yoga
+                modifier = Modifier
+                    .size (width = 180.dp, height = 263.dp)
+            )
+            Spacer(modifier.height(8.dp))
+
+        }
+    }
+
+
 
 // Step: Align your body row - Arrangements
 @Composable
@@ -145,14 +179,31 @@ fun FavoriteCollectionsGrid(
     // Implement composable here
     LazyHorizontalGrid(   //asignacion más atractiva pero igual que el LazyRow grid se lo toma celda
         rows = GridCells.Fixed(1), //número de celdas
-        contentPadding = PaddingValues(horizontal = 16.dp), // no me termina de quedar claro
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        //contentPadding = PaddingValues(horizontal = 16.dp), // no me termina de quedar claro
+        //horizontalArrangement = Arrangement.spacedBy(8.dp),
+
         modifier = modifier
-            .height(168.dp)  // Altura del conjuto de 2 conjunto en vertical
+            .height(242.dp)  // Altura del conjuto de 2 conjunto en vertical
     ){
         items(favoriteCollectionsData){
-                item -> FavoriteCollectionCard(item.drawable, item.text, modifier = modifier. height(80.dp))
+                item -> FavoriteCollectionCard(item.drawable, item.text, modifier = modifier. height(21.dp))
+        }
+    }
+}
+@Composable
+fun FavoriteCollectionsGrid2(
+    modifier: Modifier = Modifier
+) {
+    // Implement composable here
+    LazyRow(
+        //rows = GridCells.Fixed(1),//asignacion más atractiva pero igual que el LazyRow grid se lo toma celda
+              //contentPadding = PaddingValues(horizontal = 16.dp), // no me termina de quedar claro
+        //horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier
+            .height(332.dp)  // Altura del conjuto de 2 conjunto en vertical
+    ){
+        items(favoriteCollectionsData){
+                item -> FavoriteCollectionCard2(item.drawable)
         }
     }
 }
@@ -160,7 +211,7 @@ fun FavoriteCollectionsGrid(
 // Step: Home section - Slot APIs
 @Composable
 fun HomeSection(  //TENEMOS QUE AVERIGUAR QUE ESTAMOS HACIENDO CON ESTO
-    @StringRes title: Int,
+
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
@@ -256,11 +307,27 @@ fun FavoriteCollectionCardPreview() {
         )
     }
 }
+@Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
+@Composable
+fun FavoriteCollectionCardPreview2() {
+    MySootheTheme {
+        FavoriteCollectionCard2(
+            modifier = Modifier.padding(8.dp),
+            drawable = R.drawable.fc2_nature_meditations,
+
+        )
+    }
+}
 
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
 @Composable
 fun FavoriteCollectionsGridPreview() {
     MySootheTheme { FavoriteCollectionsGrid() }
+}
+@Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
+@Composable
+fun FavoriteCollectionsGridPreview2() {
+    MySootheTheme { FavoriteCollectionsGrid2() }
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
@@ -273,8 +340,30 @@ fun AlignYourBodyRowPreview() {
 @Composable
 fun HomeSectionPreview() {
     MySootheTheme {
-        HomeSection(R.string.align_your_body) {
+        Surface (modifier = Modifier
+            .background(MaterialTheme.colorScheme.surface)){
+
+        Column (modifier = Modifier
+                .verticalScroll(rememberScrollState())) //IMPORTANTE. recuerda la posicion del scroll para abajo.
+        {
+        HomeSection {
             AlignYourBodyRow()
+            }
+            Spacer(modifier = Modifier
+                .height(30.dp))
+
+        HomeSection {
+            FavoriteCollectionsGrid()
+            }
+            Spacer(modifier = Modifier
+                .height(30.dp))
+
+            HomeSection {
+                FavoriteCollectionsGrid2()
+            }
+            Spacer(modifier = Modifier
+                .height(30.dp))
+        }
         }
     }
 }
