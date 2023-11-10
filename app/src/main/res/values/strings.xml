@@ -31,4 +31,9 @@
     <string name="bottom_navigation_home">Home</string>
     <string name="bottom_navigation_profile">Profile</string>
     <string name="placeholder_search">Search</string>
+    <string name="for_you">FOR YOU</string>
+    <string name="originals">ORIGINAL</string>
+    <string name="canvas">CANVAS</string>
+    <string name="my">MY</string>
+    <string name="more">MORE</string>
 </resources>

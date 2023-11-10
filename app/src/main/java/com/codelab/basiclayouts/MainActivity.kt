@@ -41,7 +41,18 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.magnifier
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Adjust
+import androidx.compose.material.icons.filled.Airplay
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Spa
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -66,8 +77,13 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier
+        .size(45.dp, 45.dp),
+    verticalAlignment = ..........
 ) {
     // Implement composable here
+    Icon(imageVector = Icons.Default.Search , contentDescription = null )
+
+
 }
 
 // Step: Align your body - Alignment
@@ -223,18 +239,92 @@ fun HomeSection(  //TENEMOS QUE AVERIGUAR QUE ESTAMOS HACIENDO CON ESTO
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
     // Implement composable here
+    Surface (modifier = Modifier
+        .background(MaterialTheme.colorScheme.surface)){
+
+
+
+        Column (modifier = Modifier
+            .verticalScroll(rememberScrollState())) //IMPORTANTE. recuerda la posicion del scroll para abajo.
+        {
+            HomeSection {
+                AlignYourBodyRow()
+            }
+            Spacer(modifier = Modifier
+                .height(30.dp))
+
+            HomeSection {
+                FavoriteCollectionsGrid()
+            }
+            Spacer(modifier = Modifier
+                .height(30.dp))
+
+            HomeSection {
+                FavoriteCollectionsGrid2()
+            }
+            Spacer(modifier = Modifier
+                .height(30.dp))
+        }
+
+    }
 }
 
 // Step: Bottom navigation - Material
 @Composable
 private fun SootheBottomNavigation(modifier: Modifier = Modifier) {
     // Implement composable here
+    NavigationBar(
+        modifier = modifier,
+        containerColor = MaterialTheme.colorScheme.surfaceVariant //Le damos el marroncito del fondo
+    ){
+
+        NavigationBarItem( //el simbolo de Home es el primero y aparece como seleccionado
+            selected = true,
+            onClick = {  }, //uso de estados
+            icon = { Icon(imageVector = Icons.Default.Adjust, contentDescription = null) }, //icono en imagen vertorial de la librería llamado Spa
+            label = { Text (text = stringResource(R.string.for_you))}
+        )
+        NavigationBarItem( //el simbolo de Home es el primero y aparece como seleccionado
+            selected = true,
+            onClick = {  }, //uso de estados
+            icon = { Icon(imageVector = Icons.Default.Airplay , contentDescription = null) }, //icono en imagen vertorial de la librería llamado Spa
+            label = { Text (text = stringResource(R.string.originals))}
+        )
+        NavigationBarItem( //icono perfil
+            selected = false,
+            onClick = { /*TODO*/ },
+            icon = { Icon(imageVector = Icons.Default.Image , contentDescription = null) },
+            label = { Text (text = stringResource(R.string.canvas))}
+        )
+        NavigationBarItem( //icono perfil
+            selected = false,
+            onClick = { /*TODO*/ },
+            icon = { Icon(imageVector = Icons.Default.Image , contentDescription = null) },
+            label = { Text (text = stringResource(R.string.my))}
+        )
+        NavigationBarItem( //icono perfil
+            selected = false,
+            onClick = { /*TODO*/ },
+            icon = { Icon(imageVector = Icons.Default.Image , contentDescription = null) },
+            label = { Text (text = stringResource(R.string.more))}
+        )
+
+    }
 }
 
 // Step: MySoothe App - Scaffold
 @Composable
 fun MySootheAppPortrait() {
     // Implement composable here
+    MySootheTheme { //Nuestro tema de diseño
+        Scaffold ( // implenta el material basico de diseño de una extructura. Usa varios materiales conjuntamente en la pantalla
+            bottomBar = { SootheBottomNavigation()}
+        ){
+
+                padding -> HomeScreen(Modifier.padding(padding))
+
+        }
+    }
 }
 
 // Step: Bottom navigation - Material
@@ -364,6 +454,7 @@ fun HomeSectionPreview() {
             Spacer(modifier = Modifier
                 .height(30.dp))
         }
+
         }
     }
 }
