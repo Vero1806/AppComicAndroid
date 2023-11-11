@@ -23,31 +23,24 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.magnifier
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Adjust
 import androidx.compose.material.icons.filled.Airplay
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Spa
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -58,8 +51,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -76,14 +69,16 @@ class MainActivity : ComponentActivity() {
 // Step: Search bar - Modifiers
 @Composable
 fun SearchBar(
+    horizontalAlignment: Alignment.Horizontal = Alignment.End,
+    verticalAlignment: Alignment.Vertical = Alignment.Top,
     modifier: Modifier = Modifier
-        .size(45.dp, 45.dp),
-    verticalAlignment = ..........
-) {
+        .size(45.dp, 45.dp)
+        .padding(10.dp)
+        .clip(CircleShape),
+
+    ) {
     // Implement composable here
     Icon(imageVector = Icons.Default.Search , contentDescription = null )
-
-
 }
 
 // Step: Align your body - Alignment
@@ -226,7 +221,7 @@ fun FavoriteCollectionsGrid2(
 
 // Step: Home section - Slot APIs
 @Composable
-fun HomeSection(  //TENEMOS QUE AVERIGUAR QUE ESTAMOS HACIENDO CON ESTO
+fun HomeSection(  //La forma de crear la funcion en la home screen
 
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
@@ -242,8 +237,9 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     Surface (modifier = Modifier
         .background(MaterialTheme.colorScheme.surface)){
 
-
-
+        HomeSection {
+            SearchBar()
+        }
         Column (modifier = Modifier
             .verticalScroll(rememberScrollState())) //IMPORTANTE. recuerda la posicion del scroll para abajo.
         {
@@ -371,7 +367,7 @@ private data class DrawableStringPair(
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
 @Composable
 fun SearchBarPreview() {
-    MySootheTheme { SearchBar(Modifier.padding(8.dp)) }
+    MySootheTheme { SearchBar() }
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
@@ -433,6 +429,9 @@ fun HomeSectionPreview() {
         Surface (modifier = Modifier
             .background(MaterialTheme.colorScheme.surface)){
 
+            HomeSection {
+                SearchBar()
+            }
         Column (modifier = Modifier
                 .verticalScroll(rememberScrollState())) //IMPORTANTE. recuerda la posicion del scroll para abajo.
         {
