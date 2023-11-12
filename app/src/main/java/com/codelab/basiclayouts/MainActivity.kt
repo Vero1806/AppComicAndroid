@@ -23,6 +23,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -53,8 +54,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.codelab.basiclayouts.ui.theme.MySootheTheme
@@ -71,55 +75,57 @@ class MainActivity : ComponentActivity() {
 fun SearchBar(
     horizontalAlignment: Alignment.Horizontal = Alignment.End,
     verticalAlignment: Alignment.Vertical = Alignment.Top,
-    modifier: Modifier = Modifier
-        .size(45.dp, 45.dp)
-        .padding(10.dp)
-        .clip(CircleShape),
 
     ) {
-    // Implement composable here
+    Surface( modifier = Modifier
+        .size(45.dp, 45.dp)
+        .padding(10.dp)
+        .clip(CircleShape)
+        .background(MaterialTheme.colorScheme.onPrimary))
+    {
     Icon(imageVector = Icons.Default.Search , contentDescription = null )
-}
+    }
+    }
 
 // Step: Align your body - Alignment
 @Composable
-fun AlignYourBodyElement(
-    @DrawableRes drawable: Int, //parametros para crear que sea dinámico INVESTIGAR
-      modifier: Modifier = Modifier //parametro opcional, no tenemos porque pasarlo. Por eso no lleva @
+fun CuadroSuperiorElement(
+    @DrawableRes drawable: Int,
+      modifier: Modifier = Modifier
 ) {
     // Implement composable here
 
         Image(painter = painterResource(drawable),
             contentDescription = null,
-            contentScale = ContentScale.Crop, // .Fit o FillBounds(mete toda la foto en el espacio que le des) modifica el cacho del recorte
+            contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(width = 480.dp, height = 389.dp) // tamaño de la imagen
+                .size(width = 480.dp, height = 389.dp)
 
         )
-
 }
-// Step: Favorite collection card - Material Surface
+
 @Composable
-fun FavoriteCollectionCard(
+fun CuadriculaCard(
     @DrawableRes drawable: Int,
     @StringRes text: Int,
     modifier: Modifier = Modifier
 ) {
     Surface (
-        shape = MaterialTheme.shapes.extraSmall, //redondea las esquinas
+        shape = MaterialTheme.shapes.small, //redondea las esquinas
         color = MaterialTheme.colorScheme.surface,
         modifier = modifier
-           .padding(16.dp) //aprox revisar
+           .padding(16.dp)
     ){
 
         Column (horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .size(132.dp, 186.dp)) {
 
+
             Image(
                 painter = painterResource(drawable),
                 contentDescription = null,
-                contentScale = ContentScale.Crop, //Lo mismo que en el ejemplo del yoga
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size (width = 132.dp, height = 133.dp)
             )
@@ -139,7 +145,7 @@ fun FavoriteCollectionCard(
 
 }
 @Composable
-fun FavoriteCollectionCard2(
+fun RestanguloCard(
     @DrawableRes drawable: Int,
 
     modifier: Modifier = Modifier
@@ -164,19 +170,19 @@ fun FavoriteCollectionCard2(
     }
 
 
-
-// Step: Align your body row - Arrangements
 @Composable
-fun AlignYourBodyRow(
+fun CuadroSuperiorRow(
     modifier: Modifier = Modifier
 ) {
-    LazyRow(
+    LazyHorizontalGrid(
+        rows = GridCells.Fixed(1),
         modifier = Modifier
+            .size (width = 480.dp, height = 389.dp)
         //BUSCAR MODIFICADOR PARA QUE ME MUESTRE LAS IMAGENES DE 1 EN 1
 
     ){
-        items (alignYourBodyData){// Llama a objetos por cada vez que ejecuta la funcióm
-                item -> AlignYourBodyElement(item.drawable)
+        items (cuadroSuperior){
+                item -> CuadroSuperiorElement(item.drawable)
         }
     }
     // Implement composable here
@@ -184,45 +190,40 @@ fun AlignYourBodyRow(
 
 // Step: Favorite collections grid - LazyGrid
 @Composable
-fun FavoriteCollectionsGrid(
+fun CuadriculaCollectionsGrid(
     modifier: Modifier = Modifier
 ) {
     // Implement composable here
-    LazyHorizontalGrid(   //asignacion más atractiva pero igual que el LazyRow grid se lo toma celda
-        rows = GridCells.Fixed(1), //número de celdas
-        //contentPadding = PaddingValues(horizontal = 16.dp), // no me termina de quedar claro
-        //horizontalArrangement = Arrangement.spacedBy(8.dp),
-
+    LazyHorizontalGrid(
+        rows = GridCells.Fixed(1),
         modifier = modifier
-            .height(242.dp)  // Altura del conjuto de 2 conjunto en vertical
+            .height(242.dp)
     ){
-        items(favoriteCollectionsData){
-                item -> FavoriteCollectionCard(item.drawable, item.text, modifier = modifier. height(21.dp))
+
+        items(cuadricula){
+                item -> CuadriculaCard(item.drawable, item.text, modifier = modifier. height(21.dp))
         }
     }
 }
 @Composable
-fun FavoriteCollectionsGrid2(
+fun RestangulosCollectionsGrid(
     modifier: Modifier = Modifier
 ) {
     // Implement composable here
     LazyRow(
-        //rows = GridCells.Fixed(1),//asignacion más atractiva pero igual que el LazyRow grid se lo toma celda
-              //contentPadding = PaddingValues(horizontal = 16.dp), // no me termina de quedar claro
-        //horizontalArrangement = Arrangement.spacedBy(8.dp),
+
         modifier = modifier
             .height(332.dp)  // Altura del conjuto de 2 conjunto en vertical
     ){
-        items(favoriteCollectionsData){
-                item -> FavoriteCollectionCard2(item.drawable)
+        items(restangulos){
+                item -> RestanguloCard(item.drawable)
         }
     }
 }
 
 // Step: Home section - Slot APIs
 @Composable
-fun HomeSection(  //La forma de crear la funcion en la home screen
-
+fun FuncionesPantalla(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
@@ -237,26 +238,39 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     Surface (modifier = Modifier
         .background(MaterialTheme.colorScheme.surface)){
 
-        HomeSection {
+        FuncionesPantalla {
             SearchBar()
         }
         Column (modifier = Modifier
-            .verticalScroll(rememberScrollState())) //IMPORTANTE. recuerda la posicion del scroll para abajo.
+            .verticalScroll(rememberScrollState()))
         {
-            HomeSection {
-                AlignYourBodyRow()
+        FuncionesPantalla {
+                CuadroSuperiorRow()
             }
-            Spacer(modifier = Modifier
-                .height(30.dp))
+           Surface (modifier = Modifier
+               .height(30.dp)) {
+               Spacer (modifier)
+               Text(
+                   "Trending Now", style = MaterialTheme.typography.labelLarge,
+                   textAlign = TextAlign.Justify,
+                   fontWeight = FontWeight.Bold
+               )
+           }
 
-            HomeSection {
-                FavoriteCollectionsGrid()
+            FuncionesPantalla {
+                CuadriculaCollectionsGrid()
             }
-            Spacer(modifier = Modifier
-                .height(30.dp))
-
-            HomeSection {
-                FavoriteCollectionsGrid2()
+            Surface (modifier = Modifier
+                .height(30.dp)) {
+                Spacer (modifier)
+                Text(
+                    "New Original", style = MaterialTheme.typography.labelLarge,
+                    textAlign = TextAlign.Justify,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            FuncionesPantalla {
+                RestangulosCollectionsGrid()
             }
             Spacer(modifier = Modifier
                 .height(30.dp))
@@ -311,14 +325,13 @@ private fun SootheBottomNavigation(modifier: Modifier = Modifier) {
 // Step: MySoothe App - Scaffold
 @Composable
 fun MySootheAppPortrait() {
-    // Implement composable here
-    MySootheTheme { //Nuestro tema de diseño
-        Scaffold ( // implenta el material basico de diseño de una extructura. Usa varios materiales conjuntamente en la pantalla
-            bottomBar = { SootheBottomNavigation()}
+
+    MySootheTheme {
+        Scaffold (
+            bottomBar = { SootheBottomNavigation()
+                   SearchBar()}
         ){
-
                 padding -> HomeScreen(Modifier.padding(padding))
-
         }
     }
 }
@@ -341,22 +354,32 @@ fun MySootheApp() {
     // Implement composable here
 }
 
-private val alignYourBodyData = listOf(
-    R.drawable.ab1_inversions to R.string.ab1_inversions,
-    R.drawable.ab2_quick_yoga to R.string.ab2_quick_yoga,
-    R.drawable.ab3_stretching to R.string.ab3_stretching,
-    R.drawable.ab4_tabata to R.string.ab4_tabata,
-    R.drawable.ab5_hiit to R.string.ab5_hiit,
-    R.drawable.ab6_pre_natal_yoga to R.string.ab6_pre_natal_yoga
+private val cuadroSuperior = listOf(
+    R.drawable.onepieceestampide to R.string.onepieceestampide,
+    R.drawable.kaguya to R.string.kaguya,
+    R.drawable.ninobestia to R.string.ninobestia,
+    R.drawable.patema to R.string.patema,
+    R.drawable.yourname to R.string.yourname,
+    R.drawable.lachicaquesaltabatiempo to R.string.lachicaquesaltabatiempo
 ).map { DrawableStringPair(it.first, it.second) }
 
-private val favoriteCollectionsData = listOf(
-    R.drawable.fc1_short_mantras to R.string.fc1_short_mantras,
-    R.drawable.fc2_nature_meditations to R.string.fc2_nature_meditations,
-    R.drawable.fc3_stress_and_anxiety to R.string.fc3_stress_and_anxiety,
-    R.drawable.fc4_self_massage to R.string.fc4_self_massage,
-    R.drawable.fc5_overwhelmed to R.string.fc5_overwhelmed,
-    R.drawable.fc6_nightly_wind_down to R.string.fc6_nightly_wind_down
+private val cuadricula = listOf(
+    R.drawable.cowboybebop to R.string.cowboybebop,
+    R.drawable.escaflone to R.string.escaflone,
+    R.drawable.evangelion to R.string.evangelion,
+    R.drawable.flcl to R.string.flcl,
+    R.drawable.sailormoon to R.string.sailormoon,
+    R.drawable.fullmetal to R.string.fullmetal
+).map { DrawableStringPair(it.first, it.second) }
+
+
+private val restangulos = listOf(
+    R.drawable.captaintsubasa to R.string.captainshubasa,
+    R.drawable.goblinslayer to R.string.goblinslayer,
+    R.drawable.hametsunooukoku to R.string.hametsunooukoku,
+    R.drawable.mashle to R.string.mashe,
+    R.drawable.onepiecered to R.string.onepiecered,
+    R.drawable.spyxfamily to R.string.spyxfamily
 ).map { DrawableStringPair(it.first, it.second) }
 
 private data class DrawableStringPair(
@@ -374,9 +397,9 @@ fun SearchBarPreview() {
 @Composable
 fun AlignYourBodyElementPreview() {
     MySootheTheme {
-        AlignYourBodyElement(
+        CuadroSuperiorElement(
             modifier = Modifier.padding(8.dp) ,
-            drawable = R.drawable.ab1_inversions,
+            drawable = R.drawable.onepieceestampide,
 
         )
     }
@@ -386,10 +409,10 @@ fun AlignYourBodyElementPreview() {
 @Composable
 fun FavoriteCollectionCardPreview() {
     MySootheTheme {
-        FavoriteCollectionCard(
+        CuadriculaCard(
             modifier = Modifier.padding(8.dp),
-            drawable = R.drawable.fc2_nature_meditations,
-            text = R.string.fc2_nature_meditations,
+            drawable = R.drawable.cowboybebop,
+            text = R.string.cowboybebop,
         )
     }
 }
@@ -397,9 +420,9 @@ fun FavoriteCollectionCardPreview() {
 @Composable
 fun FavoriteCollectionCardPreview2() {
     MySootheTheme {
-        FavoriteCollectionCard2(
+        RestanguloCard(
             modifier = Modifier.padding(8.dp),
-            drawable = R.drawable.fc2_nature_meditations,
+            drawable = R.drawable.captaintsubasa,
 
         )
     }
@@ -408,18 +431,18 @@ fun FavoriteCollectionCardPreview2() {
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
 @Composable
 fun FavoriteCollectionsGridPreview() {
-    MySootheTheme { FavoriteCollectionsGrid() }
+    MySootheTheme { CuadriculaCollectionsGrid() }
 }
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
 @Composable
 fun FavoriteCollectionsGridPreview2() {
-    MySootheTheme { FavoriteCollectionsGrid2() }
+    MySootheTheme { RestangulosCollectionsGrid() }
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
 @Composable
 fun AlignYourBodyRowPreview() {
-    MySootheTheme { AlignYourBodyRow() }
+    MySootheTheme { CuadroSuperiorRow() }
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
@@ -429,26 +452,26 @@ fun HomeSectionPreview() {
         Surface (modifier = Modifier
             .background(MaterialTheme.colorScheme.surface)){
 
-            HomeSection {
+            FuncionesPantalla {
                 SearchBar()
             }
         Column (modifier = Modifier
                 .verticalScroll(rememberScrollState())) //IMPORTANTE. recuerda la posicion del scroll para abajo.
         {
-        HomeSection {
-            AlignYourBodyRow()
+        FuncionesPantalla {
+            CuadroSuperiorRow()
             }
             Spacer(modifier = Modifier
                 .height(30.dp))
 
-        HomeSection {
-            FavoriteCollectionsGrid()
+        FuncionesPantalla {
+            CuadriculaCollectionsGrid()
             }
             Spacer(modifier = Modifier
                 .height(30.dp))
 
-            HomeSection {
-                FavoriteCollectionsGrid2()
+            FuncionesPantalla {
+                RestangulosCollectionsGrid()
             }
             Spacer(modifier = Modifier
                 .height(30.dp))
