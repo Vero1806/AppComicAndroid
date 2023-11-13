@@ -107,7 +107,6 @@ fun CuadroSuperiorElement(
     @DrawableRes drawable: Int,
       modifier: Modifier = Modifier
 ) {
-
         Image(painter = painterResource(drawable),
             contentDescription = null,
             contentScale = ContentScale.Crop,
@@ -149,7 +148,6 @@ fun CuadriculaCard(
             Text(
                 text = stringResource(text),
                 style = MaterialTheme.typography.titleMedium,
-                //color = MaterialTheme.colorScheme.onPrimary,
                  modifier = Modifier,
 
             )
@@ -335,15 +333,17 @@ private fun SootheBottomNavigation(modifier: Modifier = Modifier) {
 
     }
 }
-
 @Composable
 fun MySootheAppPortrait() {
 
     MySootheTheme {
         Scaffold (
             topBar = { Search() },
-            bottomBar = {SootheBottomNavigation() })
 
+            bottomBar = {SootheBottomNavigation() },
+
+                    //scrollBehavior = scrollBehavior
+        )
         {
                 padding -> HomeScreen(Modifier.padding(padding))
         }
