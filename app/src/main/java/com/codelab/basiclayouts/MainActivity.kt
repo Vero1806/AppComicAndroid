@@ -21,11 +21,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.End
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -40,7 +45,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Adjust
 import androidx.compose.material.icons.filled.Airplay
+import androidx.compose.material.icons.filled.Brush
+import androidx.compose.material.icons.filled.ControlPoint
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -55,6 +63,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.VerticalAlignmentLine
+import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.platform.InspectableModifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -62,6 +72,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.codelab.basiclayouts.ui.theme.MySootheTheme
+import com.codelab.basiclayouts.ui.theme.shapes
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,30 +81,32 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-// Step: Search bar - Modifiers
 @Composable
-fun SearchBar(
-    horizontalAlignment: Alignment.Horizontal = Alignment.End,
-    verticalAlignment: Alignment.Vertical = Alignment.Top,
+fun Search(
 
     ) {
-    Surface( modifier = Modifier
-        .size(45.dp, 45.dp)
-        .padding(10.dp)
-        .clip(CircleShape)
-        .background(MaterialTheme.colorScheme.onPrimary))
+    Row(
+        horizontalArrangement = Arrangement.End,
+        )
     {
-    Icon(imageVector = Icons.Default.Search , contentDescription = null )
+        Surface(
+            modifier = Modifier
+                .size(50.dp, 50.dp)
+                .padding(10.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.onPrimary)
+                .fillMaxSize()
+                .padding(start = 180.dp),
+        ) {
+            Icon(imageVector = Icons.Default.Search, contentDescription = null)
+        }
     }
     }
-
-// Step: Align your body - Alignment
 @Composable
 fun CuadroSuperiorElement(
     @DrawableRes drawable: Int,
       modifier: Modifier = Modifier
 ) {
-    // Implement composable here
 
         Image(painter = painterResource(drawable),
             contentDescription = null,
@@ -116,7 +129,6 @@ fun CuadriculaCard(
         color = MaterialTheme.colorScheme.surface,
         modifier = modifier
             .padding(8.dp)
-
     ){
 
         Column (horizontalAlignment = Alignment.CenterHorizontally,
@@ -130,6 +142,7 @@ fun CuadriculaCard(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size (width = 132.dp, height = 133.dp)
+                    .clip(shapes.medium)
             )
             Spacer(modifier.height(8.dp))
 
@@ -155,15 +168,15 @@ fun RestanguloCard(
         shape = MaterialTheme.shapes.small,
         color = MaterialTheme.colorScheme.surface,
         modifier = modifier
-            .padding(9.dp) //aprox revisar
+            .padding(8.dp)
     ){
-
             Image(
                 painter = painterResource(drawable),
                 contentDescription = null,
-                contentScale = ContentScale.Crop, //Lo mismo que en el ejemplo del yoga
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size (width = 180.dp, height = 263.dp)
+                    .clip(shapes.medium)
             )
             Spacer(modifier.height(2.dp))
 
@@ -193,16 +206,19 @@ fun CuadroSuperiorRow(
 fun CuadriculaCollectionsGrid(
     modifier: Modifier = Modifier
 ) {
-   Surface(modifier .padding(5.dp))
+   Surface(
+       modifier .padding(5.dp))
     {
         Column (
            horizontalAlignment = Alignment.Start){
 
         Text(
-        "   Trending Now",
+        "Trending Now",
         style = MaterialTheme.typography.titleLarge,
         textAlign = TextAlign.Start,
         fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .padding(start = 20.dp)
 
     )
     LazyHorizontalGrid(
@@ -223,17 +239,17 @@ fun RestangulosCollectionsGrid(
     modifier: Modifier = Modifier
 ) {
     Column {
-
     Text(
-        "   New Original",
+        "New Original",
         style = MaterialTheme.typography.titleLarge,
         textAlign = TextAlign.Justify,
         fontWeight = FontWeight.Bold,
+        modifier = Modifier
+            .padding(start = 20.dp)
     )
     LazyRow(
-
         modifier = modifier
-            .height(332.dp)  // Altura del conjuto de 2 conjunto en vertical
+            .height(332.dp)
     ) {
         items(restangulos) { item ->
             RestanguloCard(item.drawable)
@@ -242,7 +258,6 @@ fun RestangulosCollectionsGrid(
     }
 }
 
-// Step: Home section - Slot APIs
 @Composable
 fun FuncionesPantalla(
     modifier: Modifier = Modifier,
@@ -258,9 +273,6 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         .background(MaterialTheme.colorScheme.surface)){
 
 
-        FuncionesPantalla {
-            SearchBar()
-        }
         Column (modifier = Modifier
             .verticalScroll(rememberScrollState()))
         {
@@ -282,80 +294,65 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     }
 }
 
-// Step: Bottom navigation - Material
 @Composable
 private fun SootheBottomNavigation(modifier: Modifier = Modifier) {
     // Implement composable here
     NavigationBar(
         modifier = modifier,
-        containerColor = MaterialTheme.colorScheme.surfaceVariant //Le damos el marroncito del fondo
+        containerColor = MaterialTheme.colorScheme.surfaceVariant
     ){
 
         NavigationBarItem(
             selected = true,
             onClick = {  },
-            icon = { Icon(imageVector = Icons.Default.Adjust, contentDescription = null) }, //icono en imagen vertorial de la librería llamado Spa
+            icon = { Icon(imageVector = Icons.Default.Adjust, contentDescription = null) },
             label = { Text (text = stringResource(R.string.for_you))}
         )
         NavigationBarItem(
             selected = false,
             onClick = {  },
-            icon = { Icon(imageVector = Icons.Default.Airplay , contentDescription = null) }, //icono en imagen vertorial de la librería llamado Spa
+            icon = { Icon(imageVector = Icons.Default.Airplay , contentDescription = null) },
             label = { Text (text = stringResource(R.string.originals))}
         )
         NavigationBarItem(
             selected = false,
             onClick = { /*TODO*/ },
-            icon = { Icon(imageVector = Icons.Default.Image , contentDescription = null) },
+            icon = { Icon(imageVector = Icons.Default.Brush , contentDescription = null) },
             label = { Text (text = stringResource(R.string.canvas))}
         )
         NavigationBarItem(
             selected = false,
             onClick = { /*TODO*/ },
-            icon = { Icon(imageVector = Icons.Default.Image , contentDescription = null) },
+            icon = { Icon(imageVector = Icons.Default.Person , contentDescription = null) },
             label = { Text (text = stringResource(R.string.my))}
         )
         NavigationBarItem(
             selected = false,
             onClick = { /*TODO*/ },
-            icon = { Icon(imageVector = Icons.Default.Image , contentDescription = null) },
+            icon = { Icon(imageVector = Icons.Default.ControlPoint, contentDescription = null) },
             label = { Text (text = stringResource(R.string.more))}
         )
 
     }
 }
 
-// Step: MySoothe App - Scaffold
 @Composable
 fun MySootheAppPortrait() {
 
     MySootheTheme {
         Scaffold (
-            bottomBar = { SootheBottomNavigation()
-                   //SearchBar()
-            }
-        ){
+            topBar = { Search() },
+            bottomBar = {SootheBottomNavigation() })
+
+        {
                 padding -> HomeScreen(Modifier.padding(padding))
         }
     }
 }
-/*
-// Step: Bottom navigation - Material
-@Composable
-private fun SootheNavigationRail(modifier: Modifier = Modifier) {
-    // Implement composable here
-}*/
-/*
-// Step: Landscape Mode
-@Composable
-fun MySootheAppLandscape(){
-    // Implement composable here
-}*/
 
-// Step: MySoothe App
 @Composable
 fun MySootheApp() {
-    // Implement composable here
+
 }
 
 private val cuadroSuperior = listOf(
@@ -394,7 +391,7 @@ private data class DrawableStringPair(
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
 @Composable
 fun SearchBarPreview() {
-    MySootheTheme { SearchBar() }
+    MySootheTheme { Search() }
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
@@ -448,43 +445,7 @@ fun RestangulosCollectionsGridPreview() {
 fun CuadroSuperiorRowPreview() {
     MySootheTheme { CuadroSuperiorRow() }
 }
-/*
-@Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
-@Composable
-fun HomeSectionPreview() {
-  /*  MySootheTheme {
-        Surface (modifier = Modifier
-            .background(MaterialTheme.colorScheme.surface)){
 
-            FuncionesPantalla {
-                SearchBar()
-            }
-        Column (modifier = Modifier
-                .verticalScroll(rememberScrollState())) //IMPORTANTE. recuerda la posicion del scroll para abajo.
-        {
-        FuncionesPantalla {
-            CuadroSuperiorRow()
-            }
-            Spacer(modifier = Modifier
-                .height(30.dp))
-
-        FuncionesPantalla {
-            CuadriculaCollectionsGrid()
-            }
-            Spacer(modifier = Modifier
-                .height(30.dp))
-
-            FuncionesPantalla {
-                RestangulosCollectionsGrid()
-            }
-            Spacer(modifier = Modifier
-                .height(30.dp))
-        }
-
-        }
-    }*/
-}
-*/
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
 @Composable
 fun ScreenContentPreview() {
@@ -496,22 +457,9 @@ fun ScreenContentPreview() {
 fun BottomNavigationPreview() {
     MySootheTheme { SootheBottomNavigation(Modifier.padding(top = 24.dp)) }
 }
-/*
-@Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
-@Composable
-fun NavigationRailPreview() {
-    MySootheTheme { SootheNavigationRail() }
-}*/
 
 @Preview(widthDp = 360, heightDp = 640)
 @Composable
 fun MySoothePortraitPreview() {
     MySootheAppPortrait()
 }
-/*
-@Preview(widthDp = 640, heightDp = 360)
-@Composable
-fun MySootheLandscapePreview() {
-    MySootheAppLandscape()
-}
-*/
