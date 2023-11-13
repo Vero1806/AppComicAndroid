@@ -111,10 +111,9 @@ fun CuadriculaCard(
     modifier: Modifier = Modifier
 ) {
     Surface (
-        shape = MaterialTheme.shapes.small, //redondea las esquinas
+        shape = MaterialTheme.shapes.small,
         color = MaterialTheme.colorScheme.surface,
         modifier = modifier
-           .padding(16.dp)
     ){
 
         Column (horizontalAlignment = Alignment.CenterHorizontally,
@@ -134,10 +133,9 @@ fun CuadriculaCard(
             Text(
                 text = stringResource(text),
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onPrimary,
+                //color = MaterialTheme.colorScheme.onPrimary,
                  modifier = Modifier,
-                //VerticalAlignmentLine = Arrangement.Bottom
-                    //.padding(horizontal = 16.dp)
+
             )
 
         }
@@ -151,7 +149,7 @@ fun RestanguloCard(
     modifier: Modifier = Modifier
 ) {
     Surface (
-        shape = MaterialTheme.shapes.extraSmall, //redondea las esquinas
+        shape = MaterialTheme.shapes.small,
         color = MaterialTheme.colorScheme.surface,
         modifier = modifier
             .padding(9.dp) //aprox revisar
@@ -185,15 +183,19 @@ fun CuadroSuperiorRow(
                 item -> CuadroSuperiorElement(item.drawable)
         }
     }
-    // Implement composable here
+
 }
 
-// Step: Favorite collections grid - LazyGrid
 @Composable
 fun CuadriculaCollectionsGrid(
     modifier: Modifier = Modifier
 ) {
-    // Implement composable here
+   Surface(modifier .padding(5.dp))
+    { Text(
+        "Trending Now", style = MaterialTheme.typography.labelLarge,
+        textAlign = TextAlign.Justify,
+        fontWeight = FontWeight.Bold
+    )}
     LazyHorizontalGrid(
         rows = GridCells.Fixed(1),
         modifier = modifier
@@ -209,7 +211,11 @@ fun CuadriculaCollectionsGrid(
 fun RestangulosCollectionsGrid(
     modifier: Modifier = Modifier
 ) {
-    // Implement composable here
+    Text(
+        "New Original", style = MaterialTheme.typography.labelLarge,
+        textAlign = TextAlign.Justify,
+        fontWeight = FontWeight.Bold
+    )
     LazyRow(
 
         modifier = modifier
@@ -247,28 +253,11 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         FuncionesPantalla {
                 CuadroSuperiorRow()
             }
-           Surface (modifier = Modifier
-               .height(30.dp)) {
-               Spacer (modifier)
-               Text(
-                   "Trending Now", style = MaterialTheme.typography.labelLarge,
-                   textAlign = TextAlign.Justify,
-                   fontWeight = FontWeight.Bold
-               )
-           }
 
             FuncionesPantalla {
                 CuadriculaCollectionsGrid()
             }
-            Surface (modifier = Modifier
-                .height(30.dp)) {
-                Spacer (modifier)
-                Text(
-                    "New Original", style = MaterialTheme.typography.labelLarge,
-                    textAlign = TextAlign.Justify,
-                    fontWeight = FontWeight.Bold
-                )
-            }
+
             FuncionesPantalla {
                 RestangulosCollectionsGrid()
             }
@@ -329,24 +318,25 @@ fun MySootheAppPortrait() {
     MySootheTheme {
         Scaffold (
             bottomBar = { SootheBottomNavigation()
-                   SearchBar()}
+                   //SearchBar()
+            }
         ){
                 padding -> HomeScreen(Modifier.padding(padding))
         }
     }
 }
-
+/*
 // Step: Bottom navigation - Material
 @Composable
 private fun SootheNavigationRail(modifier: Modifier = Modifier) {
     // Implement composable here
-}
-
+}*/
+/*
 // Step: Landscape Mode
 @Composable
 fun MySootheAppLandscape(){
     // Implement composable here
-}
+}*/
 
 // Step: MySoothe App
 @Composable
@@ -395,7 +385,7 @@ fun SearchBarPreview() {
 
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
 @Composable
-fun AlignYourBodyElementPreview() {
+fun CuadroSuperiorElementPreview() {
     MySootheTheme {
         CuadroSuperiorElement(
             modifier = Modifier.padding(8.dp) ,
@@ -407,7 +397,7 @@ fun AlignYourBodyElementPreview() {
 
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
 @Composable
-fun FavoriteCollectionCardPreview() {
+fun CuadriculaCardPreview() {
     MySootheTheme {
         CuadriculaCard(
             modifier = Modifier.padding(8.dp),
@@ -418,7 +408,7 @@ fun FavoriteCollectionCardPreview() {
 }
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
 @Composable
-fun FavoriteCollectionCardPreview2() {
+fun  RestanguloCardPreview() {
     MySootheTheme {
         RestanguloCard(
             modifier = Modifier.padding(8.dp),
@@ -430,25 +420,25 @@ fun FavoriteCollectionCardPreview2() {
 
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
 @Composable
-fun FavoriteCollectionsGridPreview() {
+fun CuadriculaCollectionsGridPreview() {
     MySootheTheme { CuadriculaCollectionsGrid() }
 }
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
 @Composable
-fun FavoriteCollectionsGridPreview2() {
+fun RestangulosCollectionsGridPreview() {
     MySootheTheme { RestangulosCollectionsGrid() }
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
 @Composable
-fun AlignYourBodyRowPreview() {
+fun CuadroSuperiorRowPreview() {
     MySootheTheme { CuadroSuperiorRow() }
 }
-
+/*
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
 @Composable
 fun HomeSectionPreview() {
-    MySootheTheme {
+  /*  MySootheTheme {
         Surface (modifier = Modifier
             .background(MaterialTheme.colorScheme.surface)){
 
@@ -478,9 +468,9 @@ fun HomeSectionPreview() {
         }
 
         }
-    }
+    }*/
 }
-
+*/
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
 @Composable
 fun ScreenContentPreview() {
@@ -492,21 +482,22 @@ fun ScreenContentPreview() {
 fun BottomNavigationPreview() {
     MySootheTheme { SootheBottomNavigation(Modifier.padding(top = 24.dp)) }
 }
-
+/*
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
 @Composable
 fun NavigationRailPreview() {
     MySootheTheme { SootheNavigationRail() }
-}
+}*/
 
 @Preview(widthDp = 360, heightDp = 640)
 @Composable
 fun MySoothePortraitPreview() {
     MySootheAppPortrait()
 }
-
+/*
 @Preview(widthDp = 640, heightDp = 360)
 @Composable
 fun MySootheLandscapePreview() {
     MySootheAppLandscape()
 }
+*/
