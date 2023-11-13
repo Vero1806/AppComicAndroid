@@ -82,21 +82,19 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Search(
-
-    ) {
+fun Search() {
     Row(
-        horizontalArrangement = Arrangement.End,
+        //horizontalArrangement = Arrangement.End,
         )
     {
         Surface(
             modifier = Modifier
-                .size(50.dp, 50.dp)
+                .size(52.dp)
                 .padding(10.dp)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.onPrimary)
-                .fillMaxSize()
-                .padding(start = 180.dp),
+                //.fillMaxSize()
+                //.padding(start = 180.dp),
         ) {
             Icon(imageVector = Icons.Default.Search, contentDescription = null)
         }
@@ -177,7 +175,6 @@ fun RestanguloCard(
                     .clip(shapes.medium)
             )
             Spacer(modifier.height(2.dp))
-
         }
     }
 
@@ -297,7 +294,7 @@ private fun SootheBottomNavigation(modifier: Modifier = Modifier) {
     // Implement composable here
     NavigationBar(
         modifier = modifier,
-        containerColor = MaterialTheme.colorScheme.surfaceVariant
+        containerColor = MaterialTheme.colorScheme.surface
     ){
 
         NavigationBarItem(
@@ -333,16 +330,15 @@ private fun SootheBottomNavigation(modifier: Modifier = Modifier) {
 
     }
 }
+
 @Composable
 fun MySootheAppPortrait() {
-
     MySootheTheme {
         Scaffold (
             topBar = { Search() },
 
             bottomBar = {SootheBottomNavigation() },
 
-                    //scrollBehavior = scrollBehavior
         )
         {
                 padding -> HomeScreen(Modifier.padding(padding))
