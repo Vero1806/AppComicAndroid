@@ -100,8 +100,9 @@ fun CuadroSuperiorElement(
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(width = 480.dp, height = 389.dp)
-
         )
+    Spacer(modifier
+        .height(10.dp))
 }
 
 @Composable
@@ -114,6 +115,8 @@ fun CuadriculaCard(
         shape = MaterialTheme.shapes.small,
         color = MaterialTheme.colorScheme.surface,
         modifier = modifier
+            .padding(8.dp)
+
     ){
 
         Column (horizontalAlignment = Alignment.CenterHorizontally,
@@ -162,7 +165,7 @@ fun RestanguloCard(
                 modifier = Modifier
                     .size (width = 180.dp, height = 263.dp)
             )
-            Spacer(modifier.height(8.dp))
+            Spacer(modifier.height(2.dp))
 
         }
     }
@@ -191,39 +194,51 @@ fun CuadriculaCollectionsGrid(
     modifier: Modifier = Modifier
 ) {
    Surface(modifier .padding(5.dp))
-    { Text(
-        "Trending Now", style = MaterialTheme.typography.labelLarge,
-        textAlign = TextAlign.Justify,
-        fontWeight = FontWeight.Bold
-    )}
+    {
+        Column (
+           horizontalAlignment = Alignment.Start){
+
+        Text(
+        "   Trending Now",
+        style = MaterialTheme.typography.titleLarge,
+        textAlign = TextAlign.Start,
+        fontWeight = FontWeight.Bold,
+
+    )
     LazyHorizontalGrid(
         rows = GridCells.Fixed(1),
         modifier = modifier
-            .height(242.dp)
-    ){
+            .height(200.dp)
+    ) {
 
-        items(cuadricula){
-                item -> CuadriculaCard(item.drawable, item.text, modifier = modifier. height(21.dp))
+        items(cuadricula) { item ->
+            CuadriculaCard(item.drawable, item.text, modifier = modifier.height(21.dp))
         }
+    }
+    }
     }
 }
 @Composable
 fun RestangulosCollectionsGrid(
     modifier: Modifier = Modifier
 ) {
+    Column {
+
     Text(
-        "New Original", style = MaterialTheme.typography.labelLarge,
+        "   New Original",
+        style = MaterialTheme.typography.titleLarge,
         textAlign = TextAlign.Justify,
-        fontWeight = FontWeight.Bold
+        fontWeight = FontWeight.Bold,
     )
     LazyRow(
 
         modifier = modifier
             .height(332.dp)  // Altura del conjuto de 2 conjunto en vertical
-    ){
-        items(restangulos){
-                item -> RestanguloCard(item.drawable)
+    ) {
+        items(restangulos) { item ->
+            RestanguloCard(item.drawable)
         }
+    }
     }
 }
 
@@ -233,16 +248,15 @@ fun FuncionesPantalla(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
-    // Implement composable here
         content()
 }
 
-// Step: Home screen - Scrolling
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
     // Implement composable here
     Surface (modifier = Modifier
         .background(MaterialTheme.colorScheme.surface)){
+
 
         FuncionesPantalla {
             SearchBar()
@@ -277,31 +291,31 @@ private fun SootheBottomNavigation(modifier: Modifier = Modifier) {
         containerColor = MaterialTheme.colorScheme.surfaceVariant //Le damos el marroncito del fondo
     ){
 
-        NavigationBarItem( //el simbolo de Home es el primero y aparece como seleccionado
+        NavigationBarItem(
             selected = true,
-            onClick = {  }, //uso de estados
+            onClick = {  },
             icon = { Icon(imageVector = Icons.Default.Adjust, contentDescription = null) }, //icono en imagen vertorial de la librería llamado Spa
             label = { Text (text = stringResource(R.string.for_you))}
         )
-        NavigationBarItem( //el simbolo de Home es el primero y aparece como seleccionado
-            selected = true,
-            onClick = {  }, //uso de estados
+        NavigationBarItem(
+            selected = false,
+            onClick = {  },
             icon = { Icon(imageVector = Icons.Default.Airplay , contentDescription = null) }, //icono en imagen vertorial de la librería llamado Spa
             label = { Text (text = stringResource(R.string.originals))}
         )
-        NavigationBarItem( //icono perfil
+        NavigationBarItem(
             selected = false,
             onClick = { /*TODO*/ },
             icon = { Icon(imageVector = Icons.Default.Image , contentDescription = null) },
             label = { Text (text = stringResource(R.string.canvas))}
         )
-        NavigationBarItem( //icono perfil
+        NavigationBarItem(
             selected = false,
             onClick = { /*TODO*/ },
             icon = { Icon(imageVector = Icons.Default.Image , contentDescription = null) },
             label = { Text (text = stringResource(R.string.my))}
         )
-        NavigationBarItem( //icono perfil
+        NavigationBarItem(
             selected = false,
             onClick = { /*TODO*/ },
             icon = { Icon(imageVector = Icons.Default.Image , contentDescription = null) },
