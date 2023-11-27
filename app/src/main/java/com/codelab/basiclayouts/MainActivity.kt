@@ -50,6 +50,7 @@ import androidx.compose.material.icons.filled.ControlPoint
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -57,10 +58,17 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.modifier.modifierLocalConsumer
@@ -121,26 +129,45 @@ fun CuadriculaCard(
     @StringRes text: Int,
     modifier: Modifier = Modifier
 ) {
+
+
+
     Surface (
         shape = MaterialTheme.shapes.small,
         color = MaterialTheme.colorScheme.surface,
         modifier = modifier
-            .padding(8.dp)
+            //.padding(8.dp)
     ){
 
         Column (horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .size(132.dp, 186.dp)) {
+                    .size(140.dp, 186.dp)) {
+//            Surface(
+//                modifier = Modifier
+//                    .clip(shapes.small)
+//                    //.size(width = 134.dp, height = 135.dp)
+//                    .background(color = Color.Black)
+//            ) {
 
+                TextButton(
+                     onClick = { /*colorBoleano = true */},
+                    modifier = Modifier
+                        .size(width = 134.dp, height = 135.dp)
+                        .background(color = Color.Black)
+                ){
+                    Image(
+                        painter = painterResource(drawable),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(width = 132.dp, height = 133.dp)
+                            .clip(shapes.extraSmall)
+                    )
+                    //Text(text = "Seleccionado",)
+                }
 
-            Image(
-                painter = painterResource(drawable),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size (width = 132.dp, height = 133.dp)
-                    .clip(shapes.medium)
-            )
+//            }
+
             Spacer(modifier.height(8.dp))
 
             Text(
@@ -153,6 +180,11 @@ fun CuadriculaCard(
         }
     }
 
+}
+
+@Composable
+fun Marcadores(){
+    var colorBoleano by rememberSaveable { mutableStateOf(false) }
 }
 @Composable
 fun RestanguloCard(
@@ -171,8 +203,8 @@ fun RestanguloCard(
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size (width = 180.dp, height = 263.dp)
-                    .clip(shapes.medium)
+                    .size(width = 180.dp, height = 263.dp)
+                    .clip(shapes.small)
             )
             Spacer(modifier.height(2.dp))
         }
