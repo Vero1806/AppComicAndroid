@@ -17,6 +17,7 @@
 package com.codelab.basiclayouts
 
 import android.os.Bundle
+import android.widget.ImageButton
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
@@ -24,6 +25,7 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.End
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,6 +53,7 @@ import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -81,6 +84,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.codelab.basiclayouts.ui.theme.MySootheTheme
 import com.codelab.basiclayouts.ui.theme.shapes
+//import kotlinx.coroutines.scheduling.DefaultIoScheduler.default
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -130,8 +134,6 @@ fun CuadriculaCard(
     modifier: Modifier = Modifier
 ) {
 
-
-
     Surface (
         shape = MaterialTheme.shapes.small,
         color = MaterialTheme.colorScheme.surface,
@@ -150,10 +152,16 @@ fun CuadriculaCard(
 //            ) {
 
                 TextButton(
-                     onClick = { /*colorBoleano = true */},
+                     onClick = {  },
+                    //enabled = false,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.background,
+                        contentColor = MaterialTheme.colorScheme.outline
+                    ),
                     modifier = Modifier
                         .size(width = 134.dp, height = 135.dp)
-                        .background(color = Color.Black)
+
+
                 ){
                     Image(
                         painter = painterResource(drawable),
@@ -166,6 +174,7 @@ fun CuadriculaCard(
                     //Text(text = "Seleccionado",)
                 }
 
+
 //            }
 
             Spacer(modifier.height(8.dp))
@@ -174,7 +183,6 @@ fun CuadriculaCard(
                 text = stringResource(text),
                 style = MaterialTheme.typography.titleMedium,
                  modifier = Modifier,
-
             )
 
         }
@@ -182,10 +190,7 @@ fun CuadriculaCard(
 
 }
 
-@Composable
-fun Marcadores(){
-    var colorBoleano by rememberSaveable { mutableStateOf(false) }
-}
+
 @Composable
 fun RestanguloCard(
     @DrawableRes drawable: Int,
