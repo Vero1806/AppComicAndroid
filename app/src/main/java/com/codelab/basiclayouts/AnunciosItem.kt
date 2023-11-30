@@ -1,5 +1,6 @@
 package com.codelab.basiclayouts
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -21,12 +22,13 @@ fun AnunciosItem(
 ) {
     Row(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             modifier = Modifier
-                //.weight(1f)
-                .padding(start = 16.dp),
+                .weight(1f)
+                .padding(start = 40.dp),
             text = taskName
         )
         IconButton(onClick = onClose) {

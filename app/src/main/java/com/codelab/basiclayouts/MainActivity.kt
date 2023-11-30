@@ -34,12 +34,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.magnifier
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -48,10 +50,17 @@ import androidx.compose.material.icons.filled.Adjust
 import androidx.compose.material.icons.filled.Airplay
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Brush
+import androidx.compose.material.icons.filled.CheckCircleOutline
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.ControlPoint
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.ThumbDown
+import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -63,6 +72,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -96,75 +106,6 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-@Preview
-fun centerAlineagePreviuw(){
-    CenterAlignedTopAppBarExample()
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CenterAlignedTopAppBarExample() {
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-
-    Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-
-        topBar = {
-            CenterAlignedTopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text(
-                        "Centered Top App Bar",
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { /* do something */ }) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Localized description"
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { /* do something */ }) {
-                        Icon(
-                            imageVector = Icons.Filled.Menu,
-                            contentDescription = "Localized description"
-                        )
-                    }
-                },
-                scrollBehavior = scrollBehavior,
-            )
-        },
-    ) { innerPadding ->
-        ScrollContent(innerPadding)
-    }
-}
-
-@Composable
-fun ScrollContent(innerPadding: PaddingValues) {
-    val range = 1..100
-
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentPadding = innerPadding,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(range.count()) { index ->
-            Text(text = "- List item number ${index + 1}")
-        }
-    }
-}
-
-
-
-@Composable
 fun Search() {
 
     Row()
@@ -174,8 +115,8 @@ fun Search() {
                 .size(52.dp)
                 .padding(10.dp)
                 .clip(CircleShape)
-                .background(colorScheme.onPrimary)
-                //.padding(start = 180.dp),
+                .background(colorScheme.background)
+               .padding(start = 200.dp),
         ) {
             NavigationBarItem(
                 selected = false,
@@ -184,7 +125,7 @@ fun Search() {
             )
 
         }
-        Anuncio()
+
     }
 
 }
@@ -194,13 +135,17 @@ fun Anuncio(){
     var showAnuncio by remember { mutableStateOf(true) }
 
     Surface(modifier = Modifier
-        .background(colorScheme.background),
+        .background(colorScheme.background)
+        .padding(2.dp)
+
 
     ){
     if(showAnuncio){
         AnunciosItem(taskName = "¿Quieres ayudarnos a traducir? " +
-                "\n Entra en nuestro foro: www.forotraductores.com ",
-            onClose = {showAnuncio = false}
+                "\n Entra en nuestro foro: \nwww.forotraductores.com ",
+            onClose = {showAnuncio = false},
+            modifier = Modifier
+
             )
     }
     }
@@ -240,7 +185,7 @@ fun CuadriculaCard(
 
         Column (horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .size(132.dp, 186.dp)) {
+                .width(132.dp)) {
 
 
             Image(
@@ -251,7 +196,7 @@ fun CuadriculaCard(
                     .size(width = 132.dp, height = 133.dp)
                     .clip(shapes.medium)
             )
-            Spacer(modifier.height(8.dp))
+            Spacer(modifier.height(2.dp))
 
             Text(
                 text = stringResource(text),
@@ -259,6 +204,20 @@ fun CuadriculaCard(
                 modifier = Modifier,
 
                 )
+            Spacer(modifier.height(1.dp))
+
+            Row {
+                TextButton(onClick = { /*TODO*/ }) {
+                    Icon(imageVector = Icons.Default.ThumbUp, contentDescription = null)
+                }
+                TextButton(onClick = { /*TODO*/ }) {
+                    Icon(imageVector = Icons.Default.ThumbDown, contentDescription = null)
+                }
+                TextButton(onClick = { /*TODO*/ }) {
+                    Icon(imageVector = Icons.Default.Clear, contentDescription = null)
+                }
+            }
+
 
         }
     }
@@ -327,11 +286,11 @@ fun CuadriculaCollectionsGrid(
     LazyHorizontalGrid(
         rows = GridCells.Fixed(1),
         modifier = modifier
-            .height(200.dp)
+            .height(250.dp)
     ) {
 
         items(cuadricula) { item ->
-            CuadriculaCard(item.drawable, item.text, modifier = modifier.height(21.dp))
+            CuadriculaCard(item.drawable, item.text)
         }
     }
     }
@@ -375,17 +334,15 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     Surface (modifier = Modifier
         .background(colorScheme.surface)){
 
-        FuncionesPantalla {
-            Anuncio()
-        }
-        FuncionesPantalla {
-            Search()
-        }
+
 
         Column (modifier = Modifier
             .verticalScroll(rememberScrollState()))
         {
 
+            FuncionesPantalla {
+                Anuncio()
+            }
         FuncionesPantalla {
                 CuadroSuperiorRow()
             }
@@ -450,7 +407,7 @@ private fun SootheBottomNavigation(modifier: Modifier = Modifier) {
 fun MySootheAppPortrait() {
     MySootheTheme {
         Scaffold (
-
+            topBar = { Search() },
             bottomBar = { SootheBottomNavigation() },
 
         )
