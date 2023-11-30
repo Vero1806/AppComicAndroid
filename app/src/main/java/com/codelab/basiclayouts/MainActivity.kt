@@ -136,7 +136,7 @@ fun Search() {
 
 @Composable
 fun Anuncio(){
-    var showAnuncio by remember { mutableStateOf(true) }
+    var showAnuncio by rememberSaveable { mutableStateOf(true) }
 
     Surface(modifier = Modifier
         .background(colorScheme.background)
@@ -151,7 +151,7 @@ fun Anuncio(){
             modifier = Modifier
 
             )
-    }
+        }
     }
 
 }
@@ -246,14 +246,14 @@ fun CuadriculaCard(
                         tint = color2
                     )
                 }
-                IconButton(
-                    onClick = {
-                    /*TODO*/
-                    }) {
-                    Icon(
-                        imageVector = Icons.Default.Clear, contentDescription = null
-                    )
-                }
+//                IconButton(
+//                    onClick = {
+//                    /*TODO*/
+//                    }) {
+//                    Icon(
+//                        imageVector = Icons.Default.Clear, contentDescription = null
+//                    )
+//                }
             }
         }
     }
