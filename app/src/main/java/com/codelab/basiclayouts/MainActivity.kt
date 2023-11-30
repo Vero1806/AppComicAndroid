@@ -17,25 +17,24 @@
 package com.codelab.basiclayouts
 
 import android.os.Bundle
-import android.widget.ImageButton
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.End
+import androidx.compose.animation.expandHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
@@ -47,39 +46,42 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Adjust
 import androidx.compose.material.icons.filled.Airplay
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Brush
 import androidx.compose.material.icons.filled.ControlPoint
-import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.modifier.modifierLocalConsumer
-import androidx.compose.ui.platform.InspectableModifier
+import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.codelab.basiclayouts.ui.theme.MySootheTheme
@@ -94,24 +96,118 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+@Preview
+fun centerAlineagePreviuw(){
+    CenterAlignedTopAppBarExample()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CenterAlignedTopAppBarExample() {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+
+        topBar = {
+            CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                ),
+                title = {
+                    Text(
+                        "Centered Top App Bar",
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = { /* do something */ }) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "Localized description"
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { /* do something */ }) {
+                        Icon(
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = "Localized description"
+                        )
+                    }
+                },
+                scrollBehavior = scrollBehavior,
+            )
+        },
+    ) { innerPadding ->
+        ScrollContent(innerPadding)
+    }
+}
+
+@Composable
+fun ScrollContent(innerPadding: PaddingValues) {
+    val range = 1..100
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize(),
+        contentPadding = innerPadding,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(range.count()) { index ->
+            Text(text = "- List item number ${index + 1}")
+        }
+    }
+}
+
+
+
+@Composable
 fun Search() {
-    Row(
-        //horizontalArrangement = Arrangement.End,
-        )
+
+    Row()
     {
         Surface(
             modifier = Modifier
                 .size(52.dp)
                 .padding(10.dp)
                 .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.onPrimary)
-                //.fillMaxSize()
+                .background(colorScheme.onPrimary)
                 //.padding(start = 180.dp),
         ) {
-            Icon(imageVector = Icons.Default.Search, contentDescription = null)
+            NavigationBarItem(
+                selected = false,
+                onClick = {  },
+                icon = { Icon(imageVector = Icons.Default.Search, contentDescription = null) }
+            )
+
         }
+        Anuncio()
+    }
+
+}
+
+@Composable
+fun Anuncio(){
+    var showAnuncio by remember { mutableStateOf(true) }
+
+    Surface(modifier = Modifier
+        .background(colorScheme.background),
+
+    ){
+    if(showAnuncio){
+        AnunciosItem(taskName = "¿Quieres ayudarnos a traducir? " +
+                "\n Entra en nuestro foro: www.forotraductores.com ",
+            onClose = {showAnuncio = false}
+            )
     }
     }
+
+}
+
+
 @Composable
 fun CuadroSuperiorElement(
     @DrawableRes drawable: Int,
@@ -127,69 +223,46 @@ fun CuadroSuperiorElement(
         .height(10.dp))
 }
 
+
+
 @Composable
 fun CuadriculaCard(
     @DrawableRes drawable: Int,
     @StringRes text: Int,
     modifier: Modifier = Modifier
 ) {
-
     Surface (
         shape = MaterialTheme.shapes.small,
         color = MaterialTheme.colorScheme.surface,
         modifier = modifier
-            //.padding(8.dp)
+            .padding(8.dp)
     ){
 
         Column (horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .size(132.dp, 186.dp)) {
+
+
+            Image(
+                painter = painterResource(drawable),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(140.dp, 186.dp)) {
-//            Surface(
-//                modifier = Modifier
-//                    .clip(shapes.small)
-//                    //.size(width = 134.dp, height = 135.dp)
-//                    .background(color = Color.Black)
-//            ) {
-
-                TextButton(
-                     onClick = {  },
-                    //enabled = false,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.background,
-                        contentColor = MaterialTheme.colorScheme.outline
-                    ),
-                    modifier = Modifier
-                        .size(width = 134.dp, height = 135.dp)
-
-
-                ){
-                    Image(
-                        painter = painterResource(drawable),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(width = 132.dp, height = 133.dp)
-                            .clip(shapes.extraSmall)
-                    )
-                    //Text(text = "Seleccionado",)
-                }
-
-
-//            }
-
+                    .size(width = 132.dp, height = 133.dp)
+                    .clip(shapes.medium)
+            )
             Spacer(modifier.height(8.dp))
 
             Text(
                 text = stringResource(text),
                 style = MaterialTheme.typography.titleMedium,
-                 modifier = Modifier,
-            )
+                modifier = Modifier,
+
+                )
 
         }
     }
-
 }
-
 
 @Composable
 fun RestanguloCard(
@@ -199,7 +272,7 @@ fun RestanguloCard(
 ) {
     Surface (
         shape = MaterialTheme.shapes.small,
-        color = MaterialTheme.colorScheme.surface,
+        color = colorScheme.surface,
         modifier = modifier
             .padding(8.dp)
     ){
@@ -212,9 +285,8 @@ fun RestanguloCard(
                     .clip(shapes.small)
             )
             Spacer(modifier.height(2.dp))
-        }
+         }
     }
-
 
 @Composable
 fun CuadroSuperiorRow(
@@ -231,7 +303,6 @@ fun CuadroSuperiorRow(
                 item -> CuadroSuperiorElement(item.drawable)
         }
     }
-
 }
 
 @Composable
@@ -302,12 +373,19 @@ fun FuncionesPantalla(
 fun HomeScreen(modifier: Modifier = Modifier) {
     // Implement composable here
     Surface (modifier = Modifier
-        .background(MaterialTheme.colorScheme.surface)){
+        .background(colorScheme.surface)){
 
+        FuncionesPantalla {
+            Anuncio()
+        }
+        FuncionesPantalla {
+            Search()
+        }
 
         Column (modifier = Modifier
             .verticalScroll(rememberScrollState()))
         {
+
         FuncionesPantalla {
                 CuadroSuperiorRow()
             }
@@ -331,7 +409,7 @@ private fun SootheBottomNavigation(modifier: Modifier = Modifier) {
     // Implement composable here
     NavigationBar(
         modifier = modifier,
-        containerColor = MaterialTheme.colorScheme.surface
+        containerColor = colorScheme.surface
     ){
 
         NavigationBarItem(
@@ -372,9 +450,8 @@ private fun SootheBottomNavigation(modifier: Modifier = Modifier) {
 fun MySootheAppPortrait() {
     MySootheTheme {
         Scaffold (
-            topBar = { Search() },
 
-            bottomBar = {SootheBottomNavigation() },
+            bottomBar = { SootheBottomNavigation() },
 
         )
         {
@@ -425,6 +502,12 @@ private data class DrawableStringPair(
 @Composable
 fun SearchBarPreview() {
     MySootheTheme { Search() }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
+@Composable
+fun AnuncioPreviuw(){
+    Anuncio()
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
