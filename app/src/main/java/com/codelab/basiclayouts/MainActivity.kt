@@ -120,16 +120,13 @@ fun Search() {
         Surface(
             modifier = Modifier
                 .size(52.dp)
-                .padding(10.dp)
                 .clip(CircleShape)
-                .background(colorScheme.onPrimary)
-                .padding(start = 200.dp),
+                .background(colorScheme.background)
         ) {
-            NavigationBarItem(
-                selected = false,
-                onClick = {  },
-                icon = { Icon(imageVector = Icons.Default.Search, contentDescription = null) }
-            )
+            TextButton(onClick = {  })
+
+            {Icon(imageVector = Icons.Default.Search, contentDescription = null)}
+
 
         }
 
@@ -148,7 +145,7 @@ fun Anuncio(){
 
     ){
     if(showAnuncio){
-        AnunciosItem(taskName = "¿Quieres ayudarnos a traducir? " +
+        AnunciosItem(taskName = " ¿Quieres ayudarnos a traducir? " +
                 "\n Entra en nuestro foro: \nwww.forotraductores.com ",
             onClose = {showAnuncio = false},
             modifier = Modifier
@@ -176,7 +173,6 @@ fun CuadroSuperiorElement(
 }
 
 
-
 @Composable
 fun CuadriculaCard(
     @DrawableRes drawable: Int,
@@ -195,8 +191,6 @@ fun CuadriculaCard(
             modifier = Modifier
                 .width(132.dp)
         ) {
-
-
             Image(
                 painter = painterResource(drawable),
                 contentDescription = null,
@@ -215,42 +209,56 @@ fun CuadriculaCard(
                 )
             Spacer(modifier.height(1.dp))
 
-
             Row {
-                var colorlike by remember { mutableStateOf(Color.Black) }
+                var color1 = MaterialTheme.colorScheme.onBackground
+                var color2 = MaterialTheme.colorScheme.onBackground
+                var pulsarLike by rememberSaveable { mutableStateOf(false) }
+                var pulsarDisLike by rememberSaveable { mutableStateOf(false) }
+
+                if (pulsarLike == true) {
+                    color1 = Color.Green
+                    color2
+                }
+                if (pulsarDisLike == true) {
+                    color1
+                    color2 = Color.Red
+                }
 
                 IconButton(
                     onClick = {
-                        val likeColor = Color.Green
-                        colorlike = likeColor
+                        pulsarLike = !pulsarLike
+                        pulsarDisLike = false
                     }) {
                     Icon(
                         Icons.Default.ThumbUpOffAlt,
                         contentDescription = "Cambiar color",
-                        tint = colorlike
+                        tint = color1
                     )
                 }
-                var colorDislike by remember { mutableStateOf(Color.Black) }
                 IconButton(
                     onClick = {
-                        val dislikeColor = Color.Red
-                        colorDislike = dislikeColor
+                        pulsarDisLike = !pulsarDisLike
+                        pulsarLike = false
                     }) {
                     Icon(
                         Icons.Default.ThumbDownOffAlt,
                         contentDescription = "Cambiar color",
-                        tint = colorDislike
+                        tint = color2
                     )
                 }
-//                IconButton(onClick = { /*TODO*/ }) {
-//                    Icon(imageVector = Icons.Default.Clear, contentDescription = null)
-//                }
+                IconButton(
+                    onClick = {
+                    /*TODO*/
+                    }) {
+                    Icon(
+                        imageVector = Icons.Default.Clear, contentDescription = null
+                    )
+                }
             }
-
-
         }
     }
 }
+
 
 @Composable
 fun RestanguloCard(

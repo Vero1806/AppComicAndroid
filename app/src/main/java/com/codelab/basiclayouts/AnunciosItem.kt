@@ -28,7 +28,7 @@ fun AnunciosItem(
         Text(
             modifier = Modifier
                 .weight(1f)
-                .padding(start = 40.dp),
+                .padding(start = 45.dp),
             text = taskName
         )
         IconButton(onClick = onClose) {
