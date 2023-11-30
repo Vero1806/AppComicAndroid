@@ -55,11 +55,14 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.ControlPoint
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ThumbDown
+import androidx.compose.material.icons.filled.ThumbDownOffAlt
 import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material.icons.filled.ThumbUpOffAlt
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -79,10 +82,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.modifier.modifierLocalConsumer
@@ -96,6 +101,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.codelab.basiclayouts.ui.theme.MySootheTheme
 import com.codelab.basiclayouts.ui.theme.shapes
+import java.util.Random
+
 //import kotlinx.coroutines.scheduling.DefaultIoScheduler.default
 
 class MainActivity : ComponentActivity() {
@@ -115,8 +122,8 @@ fun Search() {
                 .size(52.dp)
                 .padding(10.dp)
                 .clip(CircleShape)
-                .background(colorScheme.background)
-               .padding(start = 200.dp),
+                .background(colorScheme.onPrimary)
+                .padding(start = 200.dp),
         ) {
             NavigationBarItem(
                 selected = false,
@@ -176,16 +183,18 @@ fun CuadriculaCard(
     @StringRes text: Int,
     modifier: Modifier = Modifier
 ) {
-    Surface (
+    Surface(
         shape = MaterialTheme.shapes.small,
         color = MaterialTheme.colorScheme.surface,
         modifier = modifier
             .padding(8.dp)
-    ){
+    ) {
 
-        Column (horizontalAlignment = Alignment.CenterHorizontally,
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .width(132.dp)) {
+                .width(132.dp)
+        ) {
 
 
             Image(
@@ -206,16 +215,36 @@ fun CuadriculaCard(
                 )
             Spacer(modifier.height(1.dp))
 
+
             Row {
-                TextButton(onClick = { /*TODO*/ }) {
-                    Icon(imageVector = Icons.Default.ThumbUp, contentDescription = null)
+                var colorlike by remember { mutableStateOf(Color.Black) }
+
+                IconButton(
+                    onClick = {
+                        val likeColor = Color.Green
+                        colorlike = likeColor
+                    }) {
+                    Icon(
+                        Icons.Default.ThumbUpOffAlt,
+                        contentDescription = "Cambiar color",
+                        tint = colorlike
+                    )
                 }
-                TextButton(onClick = { /*TODO*/ }) {
-                    Icon(imageVector = Icons.Default.ThumbDown, contentDescription = null)
+                var colorDislike by remember { mutableStateOf(Color.Black) }
+                IconButton(
+                    onClick = {
+                        val dislikeColor = Color.Red
+                        colorDislike = dislikeColor
+                    }) {
+                    Icon(
+                        Icons.Default.ThumbDownOffAlt,
+                        contentDescription = "Cambiar color",
+                        tint = colorDislike
+                    )
                 }
-                TextButton(onClick = { /*TODO*/ }) {
-                    Icon(imageVector = Icons.Default.Clear, contentDescription = null)
-                }
+//                IconButton(onClick = { /*TODO*/ }) {
+//                    Icon(imageVector = Icons.Default.Clear, contentDescription = null)
+//                }
             }
 
 
