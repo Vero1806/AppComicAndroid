@@ -108,7 +108,16 @@ import java.util.Random
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { MySootheApp() }
+        setContent { MySootheTheme {
+            Scaffold (
+                topBar = { Search() },
+                bottomBar = { SootheBottomNavigation() },
+            )
+            {
+                    padding -> HomeScreen(Modifier.padding(padding))
+            }
+        }
+        }
     }
 }
 
@@ -446,17 +455,11 @@ fun MySootheAppPortrait() {
         Scaffold (
             topBar = { Search() },
             bottomBar = { SootheBottomNavigation() },
-
         )
         {
                 padding -> HomeScreen(Modifier.padding(padding))
         }
     }
-}
-
-@Composable
-fun MySootheApp() {
-
 }
 
 private val cuadroSuperior = listOf(
